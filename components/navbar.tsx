@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Waves } from "lucide-react"
 
 const navLinks = [
-  { label: "Vibes", href: "#vibes" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Explore", href: "#explore" },
+  { label: "Trending", href: "#trending" },
   { label: "About", href: "#about" },
 ]
 
