@@ -3,7 +3,10 @@ name: Refresh Nairobi Vibes
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 21 * * 0' # Runs every Sunday at 9 PM
+    - cron: '0 21 * * 0' # 9 PM Sunday
+
+permissions:
+  contents: write  # Explicitly tells GitHub this job can write files
 
 jobs:
   scrape:
@@ -11,11 +14,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Uses the built-in auth token
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' # Upgraded to avoid the deprecation warning
+          node-version: '22'
 
       - name: Install dependencies
         run: |
@@ -30,8 +35,8 @@ jobs:
 
       - name: Commit and Push Data
         run: |
-          git config --global user.name "VibeBot"
-          git config --global user.email "bot@vibe-machine.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/spots.json
-          git commit -m "🤖 Sunday Night Vibe Refresh [bot]" || echo "No changes to commit"
-          git push
+          git commit -m "🤖 Sunday Night Vibe Refresh" || echo "No changes to commit"
+          git push origin main
