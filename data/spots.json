@@ -1,56 +1,56 @@
 [
   {
-    "id": "8b5vilihv",
+    "id": "iu1aaagep",
     "name": "The Alchemist",
     "vibe": "The Hype",
     "location": "Westlands",
     "priceRange": "3,500 - 8,750 KES",
     "minPrice": 3500,
-    "matchScore": 95,
+    "matchScore": 90,
     "image": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "rf1mnn1e1",
+    "id": "5khtmczwd",
     "name": "Roadhouse Grill",
     "vibe": "Choma & Beers",
     "location": "Karen",
     "priceRange": "2,000 - 5,000 KES",
     "minPrice": 2000,
-    "matchScore": 89,
+    "matchScore": 98,
     "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "q2elixukg",
+    "id": "iqyz34e12",
     "name": "Sankara Sarabi",
     "vibe": "The 99th Floor",
     "location": "Westlands",
     "priceRange": "12,000 - 30,000 KES",
     "minPrice": 12000,
-    "matchScore": 91,
+    "matchScore": 87,
     "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "mwj0pvh1r",
+    "id": "xv86uoy1j",
     "name": "Artcaffe Market",
     "vibe": "Soft Life",
     "location": "Gigiri",
     "priceRange": "4,500 - 11,250 KES",
     "minPrice": 4500,
-    "matchScore": 93,
+    "matchScore": 94,
     "image": "https://images.unsplash.com/photo-1544145945-f904253d0c7b?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "ycxu15rfb",
+    "id": "5xxc0072w",
     "name": "GTC Rooftop",
     "vibe": "The 99th Floor",
     "location": "Westlands",
     "priceRange": "15,000 - 37,500 KES",
     "minPrice": 15000,
-    "matchScore": 89,
+    "matchScore": 91,
     "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "yuyovay5k",
+    "id": "z5x2dmkaj",
     "name": "Cultiva Farm",
     "vibe": "Soft Life",
     "location": "Karen",
