@@ -8,42 +8,42 @@ const liveSpots = [
     name: "The Alchemist",
     neighborhood: "Westlands",
     vibeMatch: 98,
-    image: "/placeholder-alchemist.jpg",
+    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=450&fit=crop",
     category: "Nightlife",
   },
   {
     name: "Artcaffe Westgate",
     neighborhood: "Westlands",
     vibeMatch: 95,
-    image: "/placeholder-artcaffe.jpg",
+    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&h=450&fit=crop",
     category: "Brunch",
   },
   {
     name: "Karura Forest",
     neighborhood: "Limuru Road",
     vibeMatch: 92,
-    image: "/placeholder-karura.jpg",
+    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&h=450&fit=crop",
     category: "Nature",
   },
   {
     name: "Tin Roof Cafe",
     neighborhood: "Karen",
     vibeMatch: 89,
-    image: "/placeholder-tinroof.jpg",
+    image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=600&h=450&fit=crop",
     category: "Hidden Gem",
   },
   {
     name: "Sankara Rooftop",
     neighborhood: "Westlands",
     vibeMatch: 94,
-    image: "/placeholder-sankara.jpg",
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=450&fit=crop",
     category: "Date Night",
   },
   {
     name: "Maasai Market",
     neighborhood: "Yaya Centre",
     vibeMatch: 87,
-    image: "/placeholder-market.jpg",
+    image: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&h=450&fit=crop",
     category: "Local Soul",
   },
 ]
@@ -58,11 +58,13 @@ function SpotCard({ spot, index }: { spot: typeof liveSpots[0]; index: number })
       whileHover={{ y: -5, scale: 1.02 }}
       className="group relative overflow-hidden rounded-2xl border border-glass-border bg-glass backdrop-blur-xl"
     >
-      {/* Image Placeholder */}
+      {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-secondary to-muted">
-        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/50">
-          <span className="text-sm font-medium">{spot.category}</span>
-        </div>
+        <img 
+          src={spot.image} 
+          alt={spot.name}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
         
         {/* Vibe Match Badge */}

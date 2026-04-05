@@ -133,9 +133,9 @@ export function BudgetSlider() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full rounded-xl bg-gradient-to-r from-primary to-accent py-3.5 text-sm font-semibold text-background transition-shadow hover:shadow-lg hover:shadow-primary/25"
+            className="w-full rounded-xl bg-gradient-to-r from-primary to-accent py-3.5 text-sm font-semibold text-background shadow-[0_0_20px_rgba(0,220,200,0.4),0_0_40px_rgba(180,100,255,0.2)] transition-shadow hover:shadow-[0_0_30px_rgba(0,220,200,0.6),0_0_60px_rgba(180,100,255,0.3)]"
           >
-            Explore Spots
+            Explore Spots in KES
           </motion.button>
         </div>
       </div>

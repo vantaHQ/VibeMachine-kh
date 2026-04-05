@@ -17,8 +17,7 @@ export function Footer() {
               <span className="text-lg font-bold text-foreground">VibeMachine</span>
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Transform your space with premium soundscapes and ambient experiences. 
-              Available on iOS, Android, and Web.
+              Nairobi&apos;s intelligent lifestyle guide. Discover the perfect spot for your vibe and your budget.
             </p>
             <div className="flex gap-3">
               {[Twitter, Instagram, Youtube].map((Icon, i) => (

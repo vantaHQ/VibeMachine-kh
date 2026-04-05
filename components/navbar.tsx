@@ -18,7 +18,7 @@ export function Navbar() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="fixed inset-x-0 top-0 z-50"
+      className="sticky inset-x-0 top-0 z-50 bg-black/70 backdrop-blur-md"
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between p-4 md:px-6">
         {/* Logo */}
