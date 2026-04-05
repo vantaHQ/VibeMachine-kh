@@ -42,30 +42,16 @@ async function scrapeNairobiVibes() {
     });
   }
 
-  // 3. Ensure the data directory exists
-  const dir = '../data';
-  if (!fs.existsSync(dir)){
-      fs.mkdirSync(dir);
-  }
-
-  // 4. Save to JSON
-  // In vibe-scraper.js, ensure the path is correct for the root
-fs.writeFileSync(path.join(__dirname, '../data/spots.json'), JSON.stringify(results, null, 2));
-  console.log(`\n✅ Successfully synced ${results.length} spots to data/spots.json`);
+ // 3. Ensure the data directory exists using Absolute Paths
+ const dataDir = path.join(__dirname, '..', 'data');
   
-  await browser.close();
-}
+ if (!fs.existsSync(dataDir)){
+     console.log('📁 Creating data directory...');
+     fs.mkdirSync(dataDir, { recursive: true });
+ }
 
-// Helper to get thematic photos for Nairobi vibes
-function getPhotoId(vibe) {
-    const photos = {
-        'The 99th Floor': '1582719478250-c89cae4dc85b', // Rooftop/Luxury
-        'The Hype': '1470225620780-dba8ba36b745',       // Nightlife/Stage
-        'Choma & Beers': '1555939594-58d7cb561ad1',    // BBQ/Grill
-        'Soft Life': '1544145945-f904253d0c7b',         // Cafe/Brunch
-        'default': '1517248135467-4c7ed9d4c44b'
-    };
-    return photos[vibe] || photos['default'];
-}
-
-scrapeNairobiVibes();
+ // 4. Save to JSON
+ const outputPath = path.join(dataDir, 'spots.json');
+ fs.writeFileSync(outputPath, JSON.stringify(results, null, 2));
+ 
+ console.log(`\n✅ Successfully synced ${results.length} spots to: ${outputPath}`);
