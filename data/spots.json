@@ -1,26 +1,26 @@
 [
   {
-    "id": "iu1aaagep",
+    "id": "25u7ovado",
     "name": "The Alchemist",
     "vibe": "The Hype",
     "location": "Westlands",
     "priceRange": "3,500 - 8,750 KES",
     "minPrice": 3500,
-    "matchScore": 90,
+    "matchScore": 98,
     "image": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "5khtmczwd",
+    "id": "fdm1jfh8p",
     "name": "Roadhouse Grill",
     "vibe": "Choma & Beers",
     "location": "Karen",
     "priceRange": "2,000 - 5,000 KES",
     "minPrice": 2000,
-    "matchScore": 98,
+    "matchScore": 91,
     "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "iqyz34e12",
+    "id": "qvo4lk716",
     "name": "Sankara Sarabi",
     "vibe": "The 99th Floor",
     "location": "Westlands",
@@ -30,33 +30,33 @@
     "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "xv86uoy1j",
+    "id": "4expttd6n",
     "name": "Artcaffe Market",
     "vibe": "Soft Life",
     "location": "Gigiri",
     "priceRange": "4,500 - 11,250 KES",
     "minPrice": 4500,
-    "matchScore": 94,
+    "matchScore": 91,
     "image": "https://images.unsplash.com/photo-1544145945-f904253d0c7b?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "5xxc0072w",
+    "id": "jwpv1k4nn",
     "name": "GTC Rooftop",
     "vibe": "The 99th Floor",
     "location": "Westlands",
     "priceRange": "15,000 - 37,500 KES",
     "minPrice": 15000,
-    "matchScore": 91,
+    "matchScore": 85,
     "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "z5x2dmkaj",
+    "id": "2a2do37ej",
     "name": "Cultiva Farm",
     "vibe": "Soft Life",
     "location": "Karen",
     "priceRange": "5,500 - 13,750 KES",
     "minPrice": 5500,
-    "matchScore": 91,
+    "matchScore": 90,
     "image": "https://images.unsplash.com/photo-1544145945-f904253d0c7b?auto=format&fit=crop&w=800&q=80"
   }
 ]
