@@ -42,16 +42,23 @@ async function scrapeNairobiVibes() {
     });
   }
 
- // 3. Ensure the data directory exists using Absolute Paths
+ // 3. Calculate paths relative to this script's location
  const dataDir = path.join(__dirname, '..', 'data');
-  
+ const outputPath = path.join(dataDir, 'spots.json');
+
+ // 4. Ensure the data directory exists
  if (!fs.existsSync(dataDir)){
      console.log('📁 Creating data directory...');
      fs.mkdirSync(dataDir, { recursive: true });
  }
 
- // 4. Save to JSON
- const outputPath = path.join(dataDir, 'spots.json');
- fs.writeFileSync(outputPath, JSON.stringify(results, null, 2));
+ // 5. Save to JSON
+ try {
+   fs.writeFileSync(outputPath, JSON.stringify(results, null, 2));
+   console.log(`\n✅ Successfully synced ${results.length} spots to: ${outputPath}`);
+ } catch (error) {
+   console.error(`❌ Failed to write file: ${error.message}`);
+   process.exit(1); // Explicitly fail so GitHub knows
+ }
  
- console.log(`\n✅ Successfully synced ${results.length} spots to: ${outputPath}`);
+ await browser.close();
