@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          persist-credentials: false # We will handle credentials manually
+          persist-credentials: false 
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -38,52 +38,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # This line forces the push to use the built-in GITHUB_TOKEN
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          
-          git add data/spots.json
-          git commit -m "🤖 Sunday Night Vibe Refresh" || echo "No changes to commit"
-          git push origin mainname: Refresh Nairobi Vibes
-
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 21 * * 0' # 9 PM Sunday
-
-permissions:
-  contents: write
-
-jobs:
-  scrape:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false # We will handle credentials manually
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install dependencies
-        run: |
-          cd scraper
-          npm install
-          npx playwright install chromium
-
-      - name: Run Nairobi Scraper
-        run: |
-          cd scraper
-          node vibe-scraper.js
-
-      - name: Commit and Push Data
-        run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
-          # This line forces the push to use the built-in GITHUB_TOKEN
+          # Force authentication using the built-in token
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           
           git add data/spots.json
