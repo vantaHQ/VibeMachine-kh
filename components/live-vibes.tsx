@@ -10,7 +10,8 @@ const allSpots = [
     neighborhood: "Westlands",
     vibeMatch: 98,
     image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=450&fit=crop",
-    category: "Nightlife",
+    category: "the-hype",
+    categoryLabel: "Nightlife",
     priceRange: [3000, 15000],
   },
   {
@@ -18,7 +19,8 @@ const allSpots = [
     neighborhood: "Westlands",
     vibeMatch: 95,
     image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&h=450&fit=crop",
-    category: "Brunch",
+    category: "soft-life",
+    categoryLabel: "Brunch",
     priceRange: [800, 3500],
   },
   {
@@ -26,7 +28,8 @@ const allSpots = [
     neighborhood: "Limuru Road",
     vibeMatch: 92,
     image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&h=450&fit=crop",
-    category: "Nature",
+    category: "hidden-gems",
+    categoryLabel: "Nature",
     priceRange: [500, 1500],
   },
   {
@@ -34,7 +37,8 @@ const allSpots = [
     neighborhood: "Karen",
     vibeMatch: 89,
     image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=600&h=450&fit=crop",
-    category: "Hidden Gem",
+    category: "hidden-gems",
+    categoryLabel: "Hidden Gem",
     priceRange: [600, 2500],
   },
   {
@@ -42,7 +46,8 @@ const allSpots = [
     neighborhood: "Westlands",
     vibeMatch: 94,
     image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=450&fit=crop",
-    category: "Date Night",
+    category: "date-night",
+    categoryLabel: "Date Night",
     priceRange: [5000, 25000],
   },
   {
@@ -50,7 +55,8 @@ const allSpots = [
     neighborhood: "Yaya Centre",
     vibeMatch: 87,
     image: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&h=450&fit=crop",
-    category: "Local Soul",
+    category: "local-soul",
+    categoryLabel: "Local Soul",
     priceRange: [500, 5000],
   },
   {
@@ -58,7 +64,8 @@ const allSpots = [
     neighborhood: "CBD",
     vibeMatch: 85,
     image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&h=450&fit=crop",
-    category: "Brunch",
+    category: "work-remote",
+    categoryLabel: "Cafe",
     priceRange: [500, 2000],
   },
   {
@@ -66,8 +73,45 @@ const allSpots = [
     neighborhood: "Karen",
     vibeMatch: 96,
     image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&h=450&fit=crop",
-    category: "Date Night",
+    category: "date-night",
+    categoryLabel: "Luxury",
     priceRange: [15000, 30000],
+  },
+  {
+    name: "Nairobi Street Kitchen",
+    neighborhood: "Westlands",
+    vibeMatch: 91,
+    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=450&fit=crop",
+    category: "local-soul",
+    categoryLabel: "Street Food",
+    priceRange: [500, 2000],
+  },
+  {
+    name: "Brew Bistro",
+    neighborhood: "Fortis Tower",
+    vibeMatch: 88,
+    image: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=600&h=450&fit=crop",
+    category: "the-hype",
+    categoryLabel: "Rooftop",
+    priceRange: [2000, 8000],
+  },
+  {
+    name: "The Social House",
+    neighborhood: "Gigiri",
+    vibeMatch: 90,
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=450&fit=crop",
+    category: "work-remote",
+    categoryLabel: "Co-working",
+    priceRange: [1000, 5000],
+  },
+  {
+    name: "Mercury Lounge",
+    neighborhood: "ABC Place",
+    vibeMatch: 93,
+    image: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&h=450&fit=crop",
+    category: "soft-life",
+    categoryLabel: "Wine Bar",
+    priceRange: [2500, 10000],
   },
 ]
 
@@ -82,8 +126,8 @@ function SpotCard({ spot, index }: SpotCardProps) {
       layout
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -20, scale: 0.95 }}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.35, delay: index * 0.06 }}
       whileHover={{ y: -5, scale: 1.02 }}
       className="group relative overflow-hidden rounded-2xl border border-glass-border bg-glass backdrop-blur-xl"
     >
@@ -100,7 +144,7 @@ function SpotCard({ spot, index }: SpotCardProps) {
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: index * 0.08 + 0.2 }}
+          transition={{ delay: index * 0.06 + 0.2 }}
           className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-accent px-3 py-1.5 text-xs font-bold text-background shadow-lg"
         >
           <TrendingUp className="h-3 w-3" />
@@ -109,7 +153,7 @@ function SpotCard({ spot, index }: SpotCardProps) {
 
         {/* Category Badge */}
         <div className="absolute left-3 top-3 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm">
-          {spot.category}
+          {spot.categoryLabel}
         </div>
       </div>
 
@@ -139,42 +183,53 @@ function SpotCard({ spot, index }: SpotCardProps) {
 
 interface LiveVibesProps {
   budget?: number
+  experience?: string | null
 }
 
-export function LiveVibes({ budget = 5000 }: LiveVibesProps) {
+export function LiveVibes({ budget = 15000, experience = null }: LiveVibesProps) {
   const filteredSpots = useMemo(() => {
     return allSpots
-      .filter(spot => spot.priceRange[0] <= budget)
+      .filter(spot => {
+        const withinBudget = spot.priceRange[0] <= budget
+        const matchesExperience = experience === null || spot.category === experience
+        return withinBudget && matchesExperience
+      })
       .sort((a, b) => b.vibeMatch - a.vibeMatch)
       .slice(0, 6)
-  }, [budget])
+  }, [budget, experience])
+
+  const experienceLabel = experience 
+    ? experience.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+    : null
 
   return (
-    <section className="relative px-4 py-16 md:py-24">
+    <section id="trending" className="relative px-4 py-12 md:py-16">
       <div className="mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-10 text-center md:mb-14"
+          className="mb-8 text-center md:mb-12"
         >
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
-            <span className="text-sm font-medium text-primary">Live Vibes</span>
+            <span className="text-sm font-medium text-primary">Live Results</span>
           </div>
-          <h2 className="mb-4 text-balance text-3xl font-bold tracking-tight text-foreground md:text-4xl lg:text-5xl">
-            Trending in Nairobi
+          <h2 className="mb-3 text-balance text-2xl font-bold tracking-tight text-foreground md:text-3xl lg:text-4xl">
+            {experienceLabel ? `${experienceLabel} Spots` : "Trending in Nairobi"}
           </h2>
-          <p className="mx-auto max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-            {filteredSpots.length} spots match your budget of {budget.toLocaleString()} KES
+          <p className="mx-auto max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground md:text-base">
+            {filteredSpots.length} spot{filteredSpots.length !== 1 ? 's' : ''} 
+            {experience ? ` for ${experienceLabel}` : ''} 
+            {' '}under {budget.toLocaleString()} KES
           </p>
         </motion.div>
 
-        <motion.div layout className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
+        <motion.div layout className="grid gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filteredSpots.map((spot, index) => (
               <SpotCard key={spot.name} spot={spot} index={index} />
@@ -186,10 +241,10 @@ export function LiveVibes({ budget = 5000 }: LiveVibesProps) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="py-20 text-center"
+            className="py-16 text-center"
           >
-            <p className="text-lg text-muted-foreground">
-              No spots found for this budget. Try increasing your budget.
+            <p className="text-base text-muted-foreground">
+              No spots match your current filters. Try adjusting your budget or experience.
             </p>
           </motion.div>
         )}

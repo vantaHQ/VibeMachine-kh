@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Play, Download, Wallet } from "lucide-react"
+import { Play, Download, Wallet, Wine, PartyPopper, TreePine, Wifi, Utensils, ShoppingBag, RotateCcw } from "lucide-react"
 
 const MIN_BUDGET = 500
 const MAX_BUDGET = 30000
@@ -12,15 +12,27 @@ function formatKES(value: number) {
   return new Intl.NumberFormat('en-KE').format(value)
 }
 
+const experiences = [
+  { id: "soft-life", label: "Soft Life", icon: Wine, color: "from-amber-400 to-orange-500" },
+  { id: "the-hype", label: "The Hype", icon: PartyPopper, color: "from-pink-500 to-purple-600" },
+  { id: "hidden-gems", label: "Hidden Gems", icon: TreePine, color: "from-emerald-400 to-teal-600" },
+  { id: "work-remote", label: "Work Remote", icon: Wifi, color: "from-cyan-400 to-blue-500" },
+  { id: "date-night", label: "Date Night", icon: Utensils, color: "from-rose-400 to-red-500" },
+  { id: "local-soul", label: "Local Soul", icon: ShoppingBag, color: "from-yellow-400 to-amber-500" },
+]
+
 interface HeroProps {
   onBudgetChange?: (budget: number) => void
+  onExperienceChange?: (experience: string | null) => void
+  selectedExperience?: string | null
 }
 
-export function Hero({ onBudgetChange }: HeroProps) {
-  const [budget, setBudget] = useState(5000)
+export function Hero({ onBudgetChange, onExperienceChange, selectedExperience }: HeroProps) {
+  const [budget, setBudget] = useState(15000)
   const [isDragging, setIsDragging] = useState(false)
 
   const percentage = ((budget - MIN_BUDGET) / (MAX_BUDGET - MIN_BUDGET)) * 100
+  const hasActiveFilters = selectedExperience !== null || budget !== 15000
 
   const handleSliderChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newBudget = Number(e.target.value)
@@ -28,13 +40,27 @@ export function Hero({ onBudgetChange }: HeroProps) {
     onBudgetChange?.(newBudget)
   }, [onBudgetChange])
 
+  const handleExperienceClick = (id: string) => {
+    if (selectedExperience === id) {
+      onExperienceChange?.(null)
+    } else {
+      onExperienceChange?.(id)
+    }
+  }
+
+  const handleReset = () => {
+    setBudget(15000)
+    onBudgetChange?.(15000)
+    onExperienceChange?.(null)
+  }
+
   return (
-    <section className="relative flex min-h-[90vh] flex-col items-center justify-center px-4 py-16 text-center md:py-24">
+    <section id="explore" className="relative flex min-h-[85vh] flex-col items-center justify-center px-4 py-12 text-center md:py-16">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative z-10 mx-auto max-w-4xl space-y-8"
+        className="relative z-10 mx-auto w-full max-w-4xl space-y-6"
       >
         {/* Badge */}
         <motion.div
@@ -55,7 +81,7 @@ export function Hero({ onBudgetChange }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-6xl lg:text-7xl"
+          className="text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl"
         >
           Find Your Perfect
           <span className="relative ml-3 inline-block">
@@ -70,46 +96,115 @@ export function Hero({ onBudgetChange }: HeroProps) {
           </span>
         </motion.h1>
 
-        {/* Budget Slider - Integrated */}
+        {/* TOP TRACK: Experience Tiles */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="w-full"
+        >
+          <p className="mb-4 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+            Choose Your Vibe
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {experiences.map((exp, index) => {
+              const Icon = exp.icon
+              const isSelected = selectedExperience === exp.id
+              return (
+                <motion.button
+                  key={exp.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 + index * 0.05 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleExperienceClick(exp.id)}
+                  className={`group relative flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium backdrop-blur-xl transition-all ${
+                    isSelected 
+                      ? "border-primary/50 bg-primary/20 text-foreground shadow-lg shadow-primary/20" 
+                      : "border-glass-border bg-glass text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                  }`}
+                >
+                  <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${exp.color} transition-transform ${isSelected ? "scale-110" : "group-hover:scale-105"}`}>
+                    <Icon className="h-4 w-4 text-white" />
+                  </div>
+                  <span>{exp.label}</span>
+                  {isSelected && (
+                    <motion.div
+                      layoutId="selected-indicator"
+                      className="absolute -inset-px rounded-xl border-2 border-primary"
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                </motion.button>
+              )
+            })}
+          </div>
+        </motion.div>
+
+        {/* BOTTOM TRACK: Budget Slider */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="mx-auto w-full max-w-lg"
+          transition={{ delay: 0.6, duration: 0.6 }}
+          className="mx-auto w-full max-w-2xl"
         >
-          <div className="relative overflow-hidden rounded-3xl border border-glass-border bg-glass p-6 backdrop-blur-xl md:p-8">
+          <div className="relative overflow-hidden rounded-2xl border border-glass-border bg-glass p-5 backdrop-blur-xl md:p-6">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
             
-            <div className="relative space-y-6">
+            <div className="relative space-y-4">
               {/* Header */}
-              <div className="text-center">
-                <motion.div
-                  animate={{ rotate: isDragging ? [0, -5, 5, 0] : 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/30"
-                >
-                  <Wallet className="h-7 w-7 text-background" />
-                </motion.div>
-                <p className="mb-1 text-sm font-medium uppercase tracking-widest text-muted-foreground">
-                  Your Budget
-                </p>
-                <AnimatePresence mode="wait">
-                  <motion.h3
-                    key={budget}
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                    className="text-3xl font-bold text-foreground md:text-4xl"
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{ rotate: isDragging ? [0, -5, 5, 0] : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/30"
                   >
-                    {formatKES(budget)} <span className="text-lg font-semibold text-primary">KES</span>
-                  </motion.h3>
+                    <Wallet className="h-5 w-5 text-background" />
+                  </motion.div>
+                  <div className="text-left">
+                    <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                      Or Filter by Budget
+                    </p>
+                    <AnimatePresence mode="wait">
+                      <motion.p
+                        key={budget}
+                        initial={{ opacity: 0, y: 3 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -3 }}
+                        transition={{ duration: 0.15 }}
+                        className="text-xl font-bold text-foreground md:text-2xl"
+                      >
+                        {formatKES(budget)} <span className="text-sm font-semibold text-primary">KES</span>
+                      </motion.p>
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                {/* Reset Button */}
+                <AnimatePresence>
+                  {hasActiveFilters && (
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleReset}
+                      className="flex items-center gap-1.5 rounded-lg border border-glass-border bg-glass px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground"
+                    >
+                      <RotateCcw className="h-3 w-3" />
+                      Reset Filters
+                    </motion.button>
+                  )}
                 </AnimatePresence>
               </div>
 
               {/* Custom Slider */}
-              <div className="space-y-3">
-                <div className="relative h-4 rounded-full bg-secondary/80">
+              <div className="space-y-2">
+                <div className="relative h-3 rounded-full bg-secondary/80">
                   {/* Track Fill */}
                   <motion.div
                     className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary via-primary to-accent"
@@ -119,12 +214,12 @@ export function Hero({ onBudgetChange }: HeroProps) {
                   
                   {/* Glow Effect */}
                   <motion.div
-                    className="absolute top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-primary/40 blur-lg"
-                    style={{ left: `calc(${percentage}% - 12px)` }}
+                    className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-primary/40 blur-lg"
+                    style={{ left: `calc(${percentage}% - 10px)` }}
                     animate={{ scale: isDragging ? 1.5 : 1 }}
                   />
                   
-                  {/* Native Range Input (Invisible but functional) */}
+                  {/* Native Range Input */}
                   <input
                     type="range"
                     min={MIN_BUDGET}
@@ -142,11 +237,11 @@ export function Hero({ onBudgetChange }: HeroProps) {
                   {/* Custom Handle */}
                   <motion.div
                     className="pointer-events-none absolute top-1/2 z-10 -translate-y-1/2"
-                    style={{ left: `calc(${percentage}% - 12px)` }}
-                    animate={{ scale: isDragging ? 1.2 : 1 }}
+                    style={{ left: `calc(${percentage}% - 10px)` }}
+                    animate={{ scale: isDragging ? 1.15 : 1 }}
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   >
-                    <div className="relative h-6 w-6 rounded-full border-3 border-background bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/50">
+                    <div className="relative h-5 w-5 rounded-full border-2 border-background bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/50">
                       {isDragging && (
                         <motion.div
                           initial={{ scale: 0.8, opacity: 0 }}
@@ -165,16 +260,6 @@ export function Hero({ onBudgetChange }: HeroProps) {
                   <span>{formatKES(MAX_BUDGET)} KES</span>
                 </div>
               </div>
-
-              {/* Feedback Text */}
-              <motion.div
-                animate={{ opacity: isDragging ? 1 : 0.7 }}
-                className="rounded-xl bg-secondary/50 px-4 py-3 text-center"
-              >
-                <p className="text-sm text-muted-foreground">
-                  Finding the best spots for your pocket...
-                </p>
-              </motion.div>
             </div>
           </div>
         </motion.div>
@@ -184,7 +269,7 @@ export function Hero({ onBudgetChange }: HeroProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.8 }}
-          className="grid grid-cols-3 gap-8"
+          className="grid grid-cols-3 gap-6"
         >
           {[
             { value: "50K+", label: "Active Users" },
@@ -198,23 +283,23 @@ export function Hero({ onBudgetChange }: HeroProps) {
               transition={{ delay: 0.9 + i * 0.1 }}
               className="text-center"
             >
-              <p className="text-2xl font-bold text-foreground md:text-3xl">{stat.value}</p>
-              <p className="text-xs text-muted-foreground md:text-sm">{stat.label}</p>
+              <p className="text-xl font-bold text-foreground md:text-2xl">{stat.value}</p>
+              <p className="text-xs text-muted-foreground">{stat.label}</p>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* CTAs - Now below stats */}
+        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.8 }}
-          className="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row"
+          transition={{ delay: 1.0, duration: 0.8 }}
+          className="flex flex-col items-center justify-center gap-3 sm:flex-row"
         >
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-3 text-sm font-semibold text-background shadow-[0_0_20px_rgba(0,220,200,0.4),0_0_40px_rgba(180,100,255,0.2)] transition-shadow hover:shadow-[0_0_30px_rgba(0,220,200,0.6),0_0_60px_rgba(180,100,255,0.3)]"
+            className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-5 py-2.5 text-sm font-semibold text-background shadow-[0_0_20px_rgba(0,220,200,0.4),0_0_40px_rgba(180,100,255,0.2)] transition-shadow hover:shadow-[0_0_30px_rgba(0,220,200,0.6),0_0_60px_rgba(180,100,255,0.3)]"
           >
             <Play className="h-4 w-4 transition-transform group-hover:scale-110" fill="currentColor" />
             Explore Now
@@ -222,7 +307,7 @@ export function Hero({ onBudgetChange }: HeroProps) {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 rounded-xl border border-glass-border bg-glass px-6 py-3 text-sm font-semibold text-foreground backdrop-blur-xl transition-colors hover:bg-secondary"
+            className="flex items-center gap-2 rounded-xl border border-glass-border bg-glass px-5 py-2.5 text-sm font-semibold text-foreground backdrop-blur-xl transition-colors hover:bg-secondary"
           >
             <Download className="h-4 w-4" />
             Download App
