@@ -1,7 +1,8 @@
 import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { VibeGrid } from "@/components/vibe-grid"
-import { PricingSection } from "@/components/pricing-section"
+import { BudgetSection } from "@/components/budget-section"
+import { LiveVibes } from "@/components/live-vibes"
 import { Footer } from "@/components/footer"
 import { VideoBackground } from "@/components/video-background"
 
@@ -14,7 +15,8 @@ export default function Home() {
       <section id="vibes">
         <VibeGrid />
       </section>
-      <PricingSection />
+      <BudgetSection />
+      <LiveVibes />
       <Footer />
     </main>
   )

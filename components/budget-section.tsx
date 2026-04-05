@@ -3,9 +3,9 @@
 import { motion } from "framer-motion"
 import { BudgetSlider } from "./budget-slider"
 
-export function PricingSection() {
+export function BudgetSection() {
   return (
-    <section id="pricing" className="relative px-4 py-20 md:py-32">
+    <section className="relative px-4 py-20 md:py-32">
       <div className="mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -15,13 +15,13 @@ export function PricingSection() {
           className="mb-12 text-center md:mb-16"
         >
           <h2 className="mb-4 text-balance text-3xl font-bold tracking-tight text-foreground md:text-4xl lg:text-5xl">
-            Simple Pricing
+            Set Your Budget
           </h2>
           <p className="mx-auto max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-            Start free, upgrade when you need more. No hidden fees, cancel anytime.
+            From casual hangs to premium experiences, find spots that fit your pocket.
           </p>
         </motion.div>
-
+        
         <BudgetSlider />
       </div>
     </section>

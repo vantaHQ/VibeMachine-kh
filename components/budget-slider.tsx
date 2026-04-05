@@ -1,19 +1,26 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Sparkles, Zap, Crown } from "lucide-react"
+import { Wallet } from "lucide-react"
 
-const tiers = [
-  { value: 0, label: "Free", price: "$0", icon: Sparkles, features: ["Basic vibes", "5 soundscapes", "Community access"] },
-  { value: 1, label: "Pro", price: "$9", icon: Zap, features: ["Unlimited vibes", "50+ soundscapes", "HD audio", "Offline mode"] },
-  { value: 2, label: "Elite", price: "$19", icon: Crown, features: ["Everything in Pro", "Exclusive drops", "Custom mixes", "Priority support"] },
-]
+const MIN_BUDGET = 500
+const MAX_BUDGET = 30000
+const STEP = 500
+
+function formatKES(value: number) {
+  return new Intl.NumberFormat('en-KE').format(value)
+}
 
 export function BudgetSlider() {
-  const [currentTier, setCurrentTier] = useState(1)
-  const tier = tiers[currentTier]
-  const TierIcon = tier.icon
+  const [budget, setBudget] = useState(5000)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const percentage = ((budget - MIN_BUDGET) / (MAX_BUDGET - MIN_BUDGET)) * 100
+
+  const handleSliderChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setBudget(Number(e.target.value))
+  }, [])
 
   return (
     <motion.div
@@ -21,113 +28,114 @@ export function BudgetSlider() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="mx-auto w-full max-w-md"
+      className="mx-auto w-full max-w-lg"
     >
       <div className="relative overflow-hidden rounded-3xl border border-glass-border bg-glass p-6 backdrop-blur-xl md:p-8">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
         
         <div className="relative space-y-6">
+          {/* Header */}
           <div className="text-center">
-            <motion.p 
-              className="mb-2 text-sm font-medium uppercase tracking-widest text-muted-foreground"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+            <motion.div
+              animate={{ rotate: isDragging ? [0, -5, 5, 0] : 0 }}
+              transition={{ duration: 0.3 }}
+              className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/30"
             >
-              Choose Your Vibe
-            </motion.p>
+              <Wallet className="h-7 w-7 text-background" />
+            </motion.div>
+            <p className="mb-1 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+              Your Budget
+            </p>
             <AnimatePresence mode="wait">
-              <motion.div
-                key={tier.label}
-                initial={{ opacity: 0, y: 10 }}
+              <motion.h3
+                key={budget}
+                initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className="flex items-center justify-center gap-3"
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.15 }}
+                className="text-3xl font-bold text-foreground md:text-4xl"
               >
-                <motion.div
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                  className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent"
-                >
-                  <TierIcon className="h-6 w-6 text-background" />
-                </motion.div>
-                <div className="text-left">
-                  <h3 className="text-2xl font-bold text-foreground">{tier.label}</h3>
-                  <p className="text-lg font-semibold text-primary">{tier.price}<span className="text-sm text-muted-foreground">/mo</span></p>
-                </div>
-              </motion.div>
+                {formatKES(budget)} <span className="text-lg font-semibold text-primary">KES</span>
+              </motion.h3>
             </AnimatePresence>
           </div>
 
           {/* Custom Slider */}
-          <div className="space-y-4">
-            <div className="relative h-3 rounded-full bg-secondary">
+          <div className="space-y-3">
+            <div className="relative h-4 rounded-full bg-secondary/80">
+              {/* Track Fill */}
               <motion.div
-                className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary to-accent"
-                initial={{ width: "50%" }}
-                animate={{ width: `${(currentTier / 2) * 100}%` }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary via-primary to-accent"
+                style={{ width: `${percentage}%` }}
+                transition={{ type: "spring", stiffness: 400, damping: 35 }}
               />
-              <div className="absolute inset-0 flex items-center justify-between px-1">
-                {tiers.map((t, i) => (
-                  <motion.button
-                    key={t.label}
-                    onClick={() => setCurrentTier(i)}
-                    whileHover={{ scale: 1.2 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`relative z-10 h-5 w-5 rounded-full border-2 transition-colors ${
-                      i <= currentTier 
-                        ? "border-primary bg-primary shadow-lg shadow-primary/50" 
-                        : "border-muted bg-background"
-                    }`}
-                  >
-                    {i === currentTier && (
-                      <motion.div
-                        layoutId="sliderGlow"
-                        className="absolute -inset-2 rounded-full bg-primary/30 blur-md"
-                      />
-                    )}
-                  </motion.button>
-                ))}
-              </div>
+              
+              {/* Glow Effect */}
+              <motion.div
+                className="absolute top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-primary/40 blur-lg"
+                style={{ left: `calc(${percentage}% - 12px)` }}
+                animate={{ scale: isDragging ? 1.5 : 1 }}
+              />
+              
+              {/* Native Range Input (Invisible but functional) */}
+              <input
+                type="range"
+                min={MIN_BUDGET}
+                max={MAX_BUDGET}
+                step={STEP}
+                value={budget}
+                onChange={handleSliderChange}
+                onMouseDown={() => setIsDragging(true)}
+                onMouseUp={() => setIsDragging(false)}
+                onTouchStart={() => setIsDragging(true)}
+                onTouchEnd={() => setIsDragging(false)}
+                className="absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0"
+              />
+              
+              {/* Custom Handle */}
+              <motion.div
+                className="pointer-events-none absolute top-1/2 z-10 -translate-y-1/2"
+                style={{ left: `calc(${percentage}% - 12px)` }}
+                animate={{ scale: isDragging ? 1.2 : 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              >
+                <div className="relative h-6 w-6 rounded-full border-3 border-background bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/50">
+                  {isDragging && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1.8, opacity: 0 }}
+                      transition={{ duration: 0.8, repeat: Infinity }}
+                      className="absolute inset-0 rounded-full bg-primary"
+                    />
+                  )}
+                </div>
+              </motion.div>
             </div>
+            
+            {/* Range Labels */}
             <div className="flex justify-between text-xs font-medium text-muted-foreground">
-              {tiers.map((t) => (
-                <span key={t.label}>{t.label}</span>
-              ))}
+              <span>{formatKES(MIN_BUDGET)} KES</span>
+              <span>{formatKES(MAX_BUDGET)} KES</span>
             </div>
           </div>
 
-          {/* Features */}
-          <AnimatePresence mode="wait">
-            <motion.ul
-              key={tier.label}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-2"
-            >
-              {tier.features.map((feature, i) => (
-                <motion.li
-                  key={feature}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex items-center gap-2 text-sm text-foreground"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  {feature}
-                </motion.li>
-              ))}
-            </motion.ul>
-          </AnimatePresence>
+          {/* Feedback Text */}
+          <motion.div
+            animate={{ opacity: isDragging ? 1 : 0.7 }}
+            className="rounded-xl bg-secondary/50 px-4 py-3 text-center"
+          >
+            <p className="text-sm text-muted-foreground">
+              Finding the best spots for your pocket...
+            </p>
+          </motion.div>
 
+          {/* CTA Button */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full rounded-xl bg-gradient-to-r from-primary to-accent py-3 text-sm font-semibold text-background transition-shadow hover:shadow-lg hover:shadow-primary/25"
+            className="w-full rounded-xl bg-gradient-to-r from-primary to-accent py-3.5 text-sm font-semibold text-background transition-shadow hover:shadow-lg hover:shadow-primary/25"
           >
-            Get Started
+            Explore Spots
           </motion.button>
         </div>
       </div>

@@ -23,7 +23,7 @@ export function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
           </span>
-          <span className="text-sm font-medium text-foreground">New vibes dropping weekly</span>
+          <span className="text-sm font-medium text-foreground">Discover Nairobi&apos;s best spots</span>
         </motion.div>
 
         {/* Heading */}
@@ -33,10 +33,10 @@ export function Hero() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-6xl lg:text-7xl"
         >
-          Curate Your Perfect
+          Find Your Perfect
           <span className="relative ml-3 inline-block">
             <span className="relative z-10 bg-gradient-to-r from-primary via-chart-3 to-accent bg-clip-text text-transparent">
-              Vibe
+              Spot
             </span>
             <motion.span
               className="absolute -inset-1 -z-10 rounded-lg bg-gradient-to-r from-primary/20 via-chart-3/20 to-accent/20 blur-lg"
@@ -53,8 +53,8 @@ export function Hero() {
           transition={{ delay: 0.5, duration: 0.8 }}
           className="mx-auto max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg"
         >
-          Premium soundscapes, ambient moods, and immersive experiences. 
-          Transform any moment into something extraordinary.
+          Premium lifestyle discovery for Nairobi. From hidden gems to rooftop views, 
+          find experiences that match your vibe and budget.
         </motion.p>
 
         {/* CTAs */}
@@ -70,7 +70,7 @@ export function Hero() {
             className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-3 text-sm font-semibold text-background shadow-lg shadow-primary/25 transition-shadow hover:shadow-xl hover:shadow-primary/30"
           >
             <Play className="h-4 w-4 transition-transform group-hover:scale-110" fill="currentColor" />
-            Start Vibing
+            Explore Now
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -91,7 +91,7 @@ export function Hero() {
         >
           {[
             { value: "50K+", label: "Active Users" },
-            { value: "200+", label: "Soundscapes" },
+            { value: "500+", label: "Curated Spots" },
             { value: "4.9", label: "App Rating" },
           ].map((stat, i) => (
             <motion.div
