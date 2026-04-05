@@ -54,11 +54,26 @@ async function scrapeNairobiVibes() {
 
  // 5. Save to JSON
  try {
-   fs.writeFileSync(outputPath, JSON.stringify(results, null, 2));
-   console.log(`\n✅ Successfully synced ${results.length} spots to: ${outputPath}`);
- } catch (error) {
-   console.error(`❌ Failed to write file: ${error.message}`);
-   process.exit(1); // Explicitly fail so GitHub knows
- }
- 
- await browser.close();
+  fs.writeFileSync(outputPath, JSON.stringify(results, null, 2));
+  console.log(`\n✅ Successfully synced ${results.length} spots to: ${outputPath}`);
+} catch (error) {
+  console.error(`❌ Failed to write file: ${error.message}`);
+  process.exit(1);
+}
+
+await browser.close();
+} // <--- THIS CLOSES THE async function scrapeNairobiVibes()
+
+// Helper to get thematic photos for Nairobi vibes
+function getPhotoId(vibe) {
+  const photos = {
+      'The 99th Floor': '1582719478250-c89cae4dc85b',
+      'The Hype': '1470225620780-dba8ba36b745',
+      'Choma & Beers': '1555939594-58d7cb561ad1',
+      'Soft Life': '1544145945-f904253d0c7b',
+      'default': '1517248135467-4c7ed9d4c44b'
+  };
+  return photos[vibe] || photos['default'];
+}
+
+scrapeNairobiVibes();
