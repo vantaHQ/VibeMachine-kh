@@ -1,28 +1,29 @@
 name: Refresh Nairobi Vibes
+
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * 0' # Runs every Sunday at Midnight UTC
-  workflow_dispatch: # Allows you to run it manually from GitHub
+    - cron: '0 21 * * 0' # Runs every Sunday at 9 PM
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22' # Upgraded to avoid the deprecation warning
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           cd scraper
           npm install
           npx playwright install chromium
 
-      - name: Run Scraper
+      - name: Run Nairobi Scraper
         run: |
           cd scraper
           node vibe-scraper.js
@@ -30,7 +31,7 @@ jobs:
       - name: Commit and Push Data
         run: |
           git config --global user.name "VibeBot"
-          git config --global user.email "bot@vibemachine.com"
+          git config --global user.email "bot@vibe-machine.com"
           git add data/spots.json
-          git commit -m "Automated Data Refresh: $(date)" || echo "No changes to commit"
+          git commit -m "🤖 Sunday Night Vibe Refresh [bot]" || echo "No changes to commit"
           git push
