@@ -8,7 +8,7 @@ import { Footer } from "@/components/footer"
 import { VideoBackground } from "@/components/video-background"
 
 export default function Home() {
-  const [budget, setBudget] = useState(15000)
+  const [budget, setBudget] = useState(30000)
   const [experience, setExperience] = useState<string | null>(null)
 
   return (

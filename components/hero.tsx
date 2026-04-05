@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Play, Download, Wallet, Wine, PartyPopper, TreePine, Wifi, Utensils, ShoppingBag, RotateCcw } from "lucide-react"
+import { Play, Download, Wallet, Wine, PartyPopper, Flame, Sunset, UtensilsCrossed, Wifi, RotateCcw } from "lucide-react"
 
 const MIN_BUDGET = 500
 const MAX_BUDGET = 30000
@@ -15,10 +15,10 @@ function formatKES(value: number) {
 const experiences = [
   { id: "soft-life", label: "Soft Life", icon: Wine, color: "from-amber-400 to-orange-500" },
   { id: "the-hype", label: "The Hype", icon: PartyPopper, color: "from-pink-500 to-purple-600" },
-  { id: "hidden-gems", label: "Hidden Gems", icon: TreePine, color: "from-emerald-400 to-teal-600" },
+  { id: "choma-beers", label: "Choma & Beers", icon: Flame, color: "from-orange-500 to-red-600" },
+  { id: "sundowners", label: "Sundowners", icon: Sunset, color: "from-amber-500 to-rose-500" },
+  { id: "99th-floor", label: "99th Floor", icon: UtensilsCrossed, color: "from-violet-400 to-purple-600" },
   { id: "work-remote", label: "Work Remote", icon: Wifi, color: "from-cyan-400 to-blue-500" },
-  { id: "date-night", label: "Date Night", icon: Utensils, color: "from-rose-400 to-red-500" },
-  { id: "local-soul", label: "Local Soul", icon: ShoppingBag, color: "from-yellow-400 to-amber-500" },
 ]
 
 interface HeroProps {
@@ -28,16 +28,29 @@ interface HeroProps {
 }
 
 export function Hero({ onBudgetChange, onExperienceChange, selectedExperience }: HeroProps) {
-  const [budget, setBudget] = useState(15000)
+  const [budget, setBudget] = useState(30000)
   const [isDragging, setIsDragging] = useState(false)
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
   const percentage = ((budget - MIN_BUDGET) / (MAX_BUDGET - MIN_BUDGET)) * 100
-  const hasActiveFilters = selectedExperience !== null || budget !== 15000
+  const hasActiveFilters = selectedExperience !== null || budget !== 30000
+
+  // Cleanup debounce on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
+  }, [])
 
   const handleSliderChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newBudget = Number(e.target.value)
     setBudget(newBudget)
-    onBudgetChange?.(newBudget)
+    
+    // Debounce the callback for performance (300ms)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      onBudgetChange?.(newBudget)
+    }, 300)
   }, [onBudgetChange])
 
   const handleExperienceClick = (id: string) => {
@@ -49,8 +62,9 @@ export function Hero({ onBudgetChange, onExperienceChange, selectedExperience }:
   }
 
   const handleReset = () => {
-    setBudget(15000)
-    onBudgetChange?.(15000)
+    setBudget(30000)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    onBudgetChange?.(30000)
     onExperienceChange?.(null)
   }
 
