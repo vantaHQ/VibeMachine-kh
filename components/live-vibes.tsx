@@ -1,155 +1,34 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
-import { MapPin, TrendingUp } from "lucide-react"
-import { useMemo } from "react"
+import { MapPin, TrendingUp, Loader2 } from "lucide-react"
+import { useMemo, useEffect, useState } from "react"
 
-const allSpots = [
-  // The Hype
-  {
-    name: "The Alchemist",
-    neighborhood: "Westlands",
-    vibeMatch: 98,
-    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=450&fit=crop",
-    category: "the-hype",
-    categoryLabel: "Nightlife",
-    priceRange: [3000, 15000],
-  },
-  {
-    name: "Brew Bistro Rooftop",
-    neighborhood: "Fortis Tower",
-    vibeMatch: 94,
-    image: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=600&h=450&fit=crop",
-    category: "the-hype",
-    categoryLabel: "Rooftop Bar",
-    priceRange: [2000, 8000],
-  },
-  // Soft Life
-  {
-    name: "Artcaffe Westgate",
-    neighborhood: "Westlands",
-    vibeMatch: 95,
-    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&h=450&fit=crop",
-    category: "soft-life",
-    categoryLabel: "Brunch",
-    priceRange: [800, 3500],
-  },
-  {
-    name: "Mercury Lounge",
-    neighborhood: "ABC Place",
-    vibeMatch: 93,
-    image: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&h=450&fit=crop",
-    category: "soft-life",
-    categoryLabel: "Wine Bar",
-    priceRange: [2500, 10000],
-  },
-  // Choma & Beers
-  {
-    name: "Roadhouse Grill",
-    neighborhood: "Karen",
-    vibeMatch: 96,
-    image: "https://images.unsplash.com/photo-1558030006-450675393462?w=600&h=450&fit=crop",
-    category: "choma-beers",
-    categoryLabel: "BBQ & Grill",
-    priceRange: [1500, 6000],
-  },
-  {
-    name: "Carnivore Restaurant",
-    neighborhood: "Langata",
-    vibeMatch: 97,
-    image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=450&fit=crop",
-    category: "choma-beers",
-    categoryLabel: "Nyama Choma",
-    priceRange: [2500, 8000],
-  },
-  {
-    name: "K1 Klubhouse",
-    neighborhood: "Parklands",
-    vibeMatch: 89,
-    image: "https://images.unsplash.com/photo-1575037614876-c38a4c44f5bd?w=600&h=450&fit=crop",
-    category: "choma-beers",
-    categoryLabel: "Garden Pub",
-    priceRange: [800, 3500],
-  },
-  // Sundowners
-  {
-    name: "Sankara Rooftop",
-    neighborhood: "Westlands",
-    vibeMatch: 94,
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=450&fit=crop",
-    category: "sundowners",
-    categoryLabel: "Rooftop Views",
-    priceRange: [3000, 12000],
-  },
-  {
-    name: "Level 8 Sky Lounge",
-    neighborhood: "Riverside",
-    vibeMatch: 92,
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=450&fit=crop",
-    category: "sundowners",
-    categoryLabel: "Sunset Views",
-    priceRange: [2000, 8000],
-  },
-  // 99th Floor (Fine Dining)
-  {
-    name: "Talisman",
-    neighborhood: "Karen",
-    vibeMatch: 98,
-    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=450&fit=crop",
-    category: "99th-floor",
-    categoryLabel: "Fine Dining",
-    priceRange: [8000, 25000],
-  },
-  {
-    name: "Hemingways Nairobi",
-    neighborhood: "Karen",
-    vibeMatch: 97,
-    image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&h=450&fit=crop",
-    category: "99th-floor",
-    categoryLabel: "Luxury Hotel",
-    priceRange: [15000, 30000],
-  },
-  {
-    name: "La Petite",
-    neighborhood: "Lavington",
-    vibeMatch: 95,
-    image: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=600&h=450&fit=crop",
-    category: "99th-floor",
-    categoryLabel: "French Cuisine",
-    priceRange: [6000, 18000],
-  },
-  // Work Remote
-  {
-    name: "Java House Hub",
-    neighborhood: "CBD",
-    vibeMatch: 85,
-    image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&h=450&fit=crop",
-    category: "work-remote",
-    categoryLabel: "Cafe",
-    priceRange: [500, 2000],
-  },
-  {
-    name: "The Social House",
-    neighborhood: "Gigiri",
-    vibeMatch: 92,
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=450&fit=crop",
-    category: "work-remote",
-    categoryLabel: "Co-working",
-    priceRange: [1000, 5000],
-  },
-  {
-    name: "Nairobi Garage",
-    neighborhood: "Delta Towers",
-    vibeMatch: 90,
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=450&fit=crop",
-    category: "work-remote",
-    categoryLabel: "Tech Hub",
-    priceRange: [1500, 6000],
-  },
-]
+const SPOTS_URL = "https://raw.githubusercontent.com/vantaHQ/VibeMachine-kh/refs/heads/main/data/spots.json"
+
+// Map internal experience IDs to API vibe names
+const vibeNameMap: Record<string, string> = {
+  "soft-life": "Soft Life",
+  "the-hype": "The Hype",
+  "choma-beers": "Choma & Beers",
+  "sundowners": "Sundowners",
+  "99th-floor": "The 99th Floor",
+  "work-remote": "Work Remote",
+}
+
+interface Spot {
+  id: string
+  name: string
+  vibe: string
+  location: string
+  priceRange: string
+  minPrice: number
+  matchScore: number
+  image: string
+}
 
 interface SpotCardProps {
-  spot: typeof allSpots[0]
+  spot: Spot
   index: number
 }
 
@@ -181,12 +60,12 @@ function SpotCard({ spot, index }: SpotCardProps) {
           className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-accent px-3 py-1.5 text-xs font-bold text-background shadow-lg"
         >
           <TrendingUp className="h-3 w-3" />
-          {spot.vibeMatch}% Match
+          {spot.matchScore}% Match
         </motion.div>
 
         {/* Category Badge */}
         <div className="absolute left-3 top-3 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm">
-          {spot.categoryLabel}
+          {spot.vibe}
         </div>
       </div>
 
@@ -198,10 +77,10 @@ function SpotCard({ spot, index }: SpotCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <MapPin className="h-3.5 w-3.5" />
-            <span>{spot.neighborhood}</span>
+            <span>{spot.location}</span>
           </div>
           <span className="text-xs font-medium text-primary">
-            {spot.priceRange[0].toLocaleString()} - {spot.priceRange[1].toLocaleString()} KES
+            {spot.priceRange}
           </span>
         </div>
       </div>
@@ -220,20 +99,44 @@ interface LiveVibesProps {
 }
 
 export function LiveVibes({ budget = 30000, experience = null }: LiveVibesProps) {
+  const [spots, setSpots] = useState<Spot[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchSpots() {
+      try {
+        setIsLoading(true)
+        const response = await fetch(SPOTS_URL)
+        if (!response.ok) {
+          throw new Error("Failed to fetch spots")
+        }
+        const data: Spot[] = await response.json()
+        setSpots(data)
+        setError(null)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load spots")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchSpots()
+  }, [])
+
   const filteredSpots = useMemo(() => {
-    return allSpots
+    const vibeName = experience ? vibeNameMap[experience] : null
+    
+    return spots
       .filter(spot => {
-        const withinBudget = spot.priceRange[0] <= budget
-        const matchesExperience = experience === null || spot.category === experience
+        const withinBudget = spot.minPrice <= budget
+        const matchesExperience = vibeName === null || spot.vibe === vibeName
         return withinBudget && matchesExperience
       })
-      .sort((a, b) => b.vibeMatch - a.vibeMatch)
+      .sort((a, b) => b.matchScore - a.matchScore)
       .slice(0, 6)
-  }, [budget, experience])
+  }, [spots, budget, experience])
 
-  const experienceLabel = experience 
-    ? experience.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-    : null
+  const experienceLabel = experience ? vibeNameMap[experience] : null
 
   return (
     <section id="trending" className="relative px-4 py-12 md:py-16">
@@ -256,21 +159,47 @@ export function LiveVibes({ budget = 30000, experience = null }: LiveVibesProps)
             {experienceLabel ? `${experienceLabel} Spots` : "Trending in Nairobi"}
           </h2>
           <p className="mx-auto max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground md:text-base">
-            {filteredSpots.length} spot{filteredSpots.length !== 1 ? 's' : ''} 
-            {experience ? ` for ${experienceLabel}` : ''} 
-            {' '}under {budget.toLocaleString()} KES
+            {isLoading ? "Loading spots..." : (
+              <>
+                {filteredSpots.length} spot{filteredSpots.length !== 1 ? 's' : ''} 
+                {experience ? ` for ${experienceLabel}` : ''} 
+                {' '}under {budget.toLocaleString()} KES
+              </>
+            )}
           </p>
         </motion.div>
 
-        <motion.div layout className="grid gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
-            {filteredSpots.map((spot, index) => (
-              <SpotCard key={spot.name} spot={spot} index={index} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        )}
 
-        {filteredSpots.length === 0 && (
+        {/* Error State */}
+        {error && !isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="py-16 text-center"
+          >
+            <p className="text-base text-destructive">{error}</p>
+          </motion.div>
+        )}
+
+        {/* Results Grid */}
+        {!isLoading && !error && (
+          <motion.div layout className="grid gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
+            <AnimatePresence mode="popLayout">
+              {filteredSpots.map((spot, index) => (
+                <SpotCard key={spot.id} spot={spot} index={index} />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && !error && filteredSpots.length === 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
