@@ -1,62 +1,181 @@
-[
-  {
-    "id": "25u7ovado",
-    "name": "The Alchemist",
-    "vibe": "The Hype",
-    "location": "Westlands",
-    "priceRange": "3,500 - 8,750 KES",
-    "minPrice": 3500,
-    "matchScore": 98,
-    "image": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "id": "fdm1jfh8p",
-    "name": "Roadhouse Grill",
-    "vibe": "Choma & Beers",
-    "location": "Karen",
-    "priceRange": "2,000 - 5,000 KES",
-    "minPrice": 2000,
-    "matchScore": 91,
-    "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "id": "qvo4lk716",
-    "name": "Sankara Sarabi",
-    "vibe": "The 99th Floor",
-    "location": "Westlands",
-    "priceRange": "12,000 - 30,000 KES",
-    "minPrice": 12000,
-    "matchScore": 87,
-    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "id": "4expttd6n",
-    "name": "Artcaffe Market",
-    "vibe": "Soft Life",
-    "location": "Gigiri",
-    "priceRange": "4,500 - 11,250 KES",
-    "minPrice": 4500,
-    "matchScore": 91,
-    "image": "https://images.unsplash.com/photo-1544145945-f904253d0c7b?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "id": "jwpv1k4nn",
-    "name": "GTC Rooftop",
-    "vibe": "The 99th Floor",
-    "location": "Westlands",
-    "priceRange": "15,000 - 37,500 KES",
-    "minPrice": 15000,
-    "matchScore": 85,
-    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "id": "2a2do37ej",
-    "name": "Cultiva Farm",
-    "vibe": "Soft Life",
-    "location": "Karen",
-    "priceRange": "5,500 - 13,750 KES",
-    "minPrice": 5500,
-    "matchScore": 90,
-    "image": "https://images.unsplash.com/photo-1544145945-f904253d0c7b?auto=format&fit=crop&w=800&q=80"
-  }
-]
+"use client"
+
+import { motion, AnimatePresence } from "framer-motion"
+import { MapPin, TrendingUp, Loader2, Sparkles, AlertCircle } from "lucide-react"
+import { useMemo, useEffect, useState } from "react"
+
+const SPOTS_URL = "https://raw.githubusercontent.com/vantaHQ/VibeMachine-kh/refs/heads/main/data/spots.json"
+
+// SYNCED NAMES: Maps Hero IDs to the Vibe strings in your spots.json
+const vibeNameMap: Record<string, string> = {
+  "fine-dining": "Signature Series",
+  "soft-life": "Soft Life",
+  "cocktails": "Cocktails & Tapas",
+  "the-hype": "The Hype",
+  "choma-beers": "Choma & Beers",
+  "sundowners": "Sundowners",
+  "work-remote": "Work Remote",
+}
+
+interface Spot {
+  id: string
+  name: string
+  vibe: string
+  location: string
+  priceRange: string
+  minPrice: number
+  matchScore: number
+  image: string
+}
+
+function SpotCard({ spot, index }: { spot: Spot; index: number }) {
+  // Check for Signature Series styling
+  const isSignature = spot.vibe === "Signature Series" || spot.minPrice >= 12000
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      className={`group relative overflow-hidden rounded-2xl border backdrop-blur-xl transition-all duration-500 ${
+        isSignature 
+        ? "border-amber-500/40 bg-amber-500/5 shadow-[0_0_20px_rgba(245,158,11,0.1)]" 
+        : "border-white/10 bg-white/5"
+      }`}
+    >
+      <div className="relative aspect-[16/10] overflow-hidden">
+        <img 
+          src={spot.image} 
+          alt={spot.name}
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
+        
+        {/* Badge */}
+        <div className={`absolute left-3 top-3 flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest shadow-xl ${
+          isSignature ? "bg-amber-500 text-black" : "bg-white/20 text-white backdrop-blur-md"
+        }`}>
+          {isSignature && <Sparkles className="h-3 w-3" />}
+          {isSignature ? "Signature Series" : spot.vibe}
+        </div>
+      </div>
+
+      <div className="p-5">
+        <h3 className={`text-lg font-bold transition-colors ${isSignature ? "text-amber-100" : "text-white group-hover:text-primary"}`}>
+          {spot.name}
+        </h3>
+        
+        <div className="mt-3 flex items-center justify-between text-xs font-medium">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <MapPin className="h-3.5 w-3.5 text-primary" /> {spot.location}
+          </div>
+          <span className={`font-black ${isSignature ? "text-amber-500" : "text-primary"}`}>
+            {spot.priceRange}
+          </span>
+        </div>
+
+        {/* Match Meter */}
+        <div className="mt-4 flex items-center gap-3">
+          <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/10">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: `${spot.matchScore}%` }}
+              className={`h-full ${isSignature ? "bg-amber-500" : "bg-primary"}`}
+            />
+          </div>
+          <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-tighter text-muted-foreground">
+            <TrendingUp className="h-3 w-3" />
+            {spot.matchScore}%
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+export function LiveVibes({ budget = 30000, experience = null }: { budget?: number; experience?: string | null }) {
+  const [spots, setSpots] = useState<Spot[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Force refresh the data stream
+    fetch(`${SPOTS_URL}?timestamp=${Date.now()}`)
+      .then(res => res.json())
+      .then(data => {
+        setSpots(Array.isArray(data) ? data : [])
+        setIsLoading(false)
+      })
+      .catch(() => setIsLoading(false))
+  }, [])
+
+  const filteredSpots = useMemo(() => {
+    return spots.filter(spot => {
+      // 1. Budget Logic
+      const withinBudget = spot.minPrice <= budget
+      if (!experience) return withinBudget
+
+      // 2. Vibe Matching Logic
+      const targetVibe = vibeNameMap[experience]
+      // Matches either exact Vibe name or if the name is mentioned in the spot vibe
+      return withinBudget && (spot.vibe === targetVibe)
+    })
+    .sort((a, b) => b.matchScore - a.matchScore)
+  }, [spots, budget, experience])
+
+  return (
+    <section id="trending" className="relative px-4 py-20">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-14 text-center">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1"
+          >
+            <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Live Data Stream</span>
+          </motion.div>
+          
+          <h2 className="text-4xl font-black tracking-tighter text-white md:text-6xl uppercase italic">
+            {experience ? vibeNameMap[experience] : "Nairobi Trending"}
+          </h2>
+          <p className="mt-4 text-muted-foreground font-medium">
+            {isLoading ? "Syncing with city database..." : `Found ${filteredSpots.length} curated matches for your budget.`}
+          </p>
+        </div>
+
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-32 gap-4">
+            <Loader2 className="h-12 w-12 animate-spin text-primary opacity-50" />
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground animate-pulse">Establishing Connection...</p>
+          </div>
+        ) : (
+          <>
+            {filteredSpots.length > 0 ? (
+              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <AnimatePresence mode="popLayout">
+                  {filteredSpots.map((spot, i) => (
+                    <SpotCard key={spot.id} spot={spot} index={i} />
+                  ))}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex flex-col items-center justify-center py-32 text-center border border-dashed border-white/10 rounded-[2.5rem] bg-white/[0.02]"
+              >
+                <AlertCircle className="h-12 w-12 text-muted-foreground/30 mb-4" />
+                <h3 className="text-2xl font-bold text-white uppercase italic">No Matches Found</h3>
+                <p className="text-muted-foreground mt-2 max-w-xs mx-auto text-sm">
+                  The data for {experience ? vibeNameMap[experience] : "this selection"} isn't in the database yet, or the budget is set too low.
+                </p>
+              </motion.div>
+            )}
+          </>
+        )}
+      </div>
+    </section>
+  )
+}
