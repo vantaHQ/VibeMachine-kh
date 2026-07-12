@@ -1,17 +1,17 @@
 [
   {
-    "id": "8jv8bzlhu",
+    "id": "i94npjpbn",
     "name": "Jiko at Tribe",
     "vibe": "Signature Series",
     "activity": "Fine Dining",
     "location": "Gigiri",
     "priceRange": "8,500 - 21,250 KES",
     "minPrice": 8500,
-    "matchScore": 85,
+    "matchScore": 99,
     "image": "https://images.unsplash.com/photo-1559339352-11d03c759d58?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "dfvrlb9ev",
+    "id": "m7l8ki9j0",
     "name": "Thai Chi Sarova",
     "vibe": "Signature Series",
     "activity": "Fine Dining",
@@ -22,69 +22,69 @@
     "image": "https://images.unsplash.com/photo-1559339352-11d03c759d58?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "j3pdhivlu",
+    "id": "gz3ngz6pf",
     "name": "Tatu Restaurant",
     "vibe": "Signature Series",
     "activity": "Fine Dining",
     "location": "CBD",
     "priceRange": "9,000 - 22,500 KES",
     "minPrice": 9000,
-    "matchScore": 91,
+    "matchScore": 88,
     "image": "https://images.unsplash.com/photo-1559339352-11d03c759d58?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "za7di24pc",
+    "id": "4uvf3ialc",
     "name": "Hero Bar Gigiri",
     "vibe": "Signature Series",
     "activity": "Cocktails & Tapas",
     "location": "Gigiri",
     "priceRange": "5,500 - 13,750 KES",
     "minPrice": 5500,
-    "matchScore": 85,
+    "matchScore": 86,
     "image": "https://images.unsplash.com/photo-1559339352-11d03c759d58?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "cpv5em2p8",
+    "id": "qkb7m8c5f",
     "name": "The Alchemist Westlands",
     "vibe": "The Hype",
     "activity": "Nightlife",
     "location": "Westlands",
     "priceRange": "3,500 - 8,750 KES",
     "minPrice": 3500,
-    "matchScore": 89,
+    "matchScore": 93,
     "image": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "jirprcw32",
+    "id": "vxco0227z",
     "name": "Shamba Cafe Loresho",
     "vibe": "Soft Life",
     "activity": "Brunch",
     "location": "Loresho",
     "priceRange": "4,000 - 10,000 KES",
     "minPrice": 4000,
-    "matchScore": 89,
+    "matchScore": 94,
     "image": "https://images.unsplash.com/photo-1544145945-f904253d0c7b?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "3rws14nlh",
+    "id": "bwc74znfh",
     "name": "Roadhouse Grill Karen",
     "vibe": "Choma & Beers",
     "activity": "Nightlife",
     "location": "Karen",
     "priceRange": "2,000 - 5,000 KES",
     "minPrice": 2000,
-    "matchScore": 86,
+    "matchScore": 98,
     "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80"
   },
   {
-    "id": "iu8tpyw3w",
+    "id": "o2vpyhx30",
     "name": "Cultiva Farm Nairobi",
     "vibe": "Soft Life",
     "activity": "Brunch",
     "location": "Karen",
     "priceRange": "5,500 - 13,750 KES",
     "minPrice": 5500,
-    "matchScore": 94,
+    "matchScore": 92,
     "image": "https://images.unsplash.com/photo-1544145945-f904253d0c7b?auto=format&fit=crop&w=800&q=80"
   }
 ]
